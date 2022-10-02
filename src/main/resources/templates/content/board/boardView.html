@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
+<body>
+<th:block layout:fragment="content">
+    <!-- Bootstrap core JavaScript-->
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <div class="container-fluid">
+        <form class="bs-component" id="formContainer" th:object="${board}" th:method="post" >
+            <input type="hidden" name="boardId" th:value="${board.get().getBoardId()}"/>
+            <div class="form-group">
+                <label class="col-form-label mt-4" for="title">제목</label>
+                <input type="text" class="form-control" placeholder="제목을 입력하세요" id="title" disabled=""
+                       th:name='title' th:value="${board.get().getTitle()}">
+            </div>
+
+            <div class="form-group">
+                <label for="boardContent" class="form-label mt-4">내용</label>
+                <textarea class="form-control" rows="10" id="boardContent" disabled=""  th:name='content' th:text="${board.get().getContent()}"></textarea>
+            </div>
+
+            <!--버튼 그룹 -->
+            <div class="row">
+                <div class="col-sm" style="text-align: right">
+                    <button type="button" class="btn btn btn-secondary btn-modify">수정</button>
+                    <button type="button" class="btn btn-danger btn-delete">삭제</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</th:block>
+</body>
+</html>
+
+<script>
+    // 한페이지에 하나씩 실행되는 onload
+    window.onload = function() {
+
+    }
+
+    document.querySelector(".btn-modify").addEventListener('click', () => {
+        let form = 'formContainer';
+
+        document.getElementById(form).setAttribute('action', 'modify');
+        document.getElementById(form).setAttribute('contentType', 'multipart/form-data');
+        document.getElementById(form).submit();
+    });
+
+    document.querySelector(".btn-delete").addEventListener('click', () => {
+        if(!confirm('삭제하시겠습니까?')) return false;
+
+        let form = 'formContainer';
+
+        document.getElementById(form).setAttribute('action', 'delete');
+        document.getElementById(form).setAttribute('contentType', 'multipart/form-data');
+        document.getElementById(form).submit();
+    });
+
+    // validation 체크
+    function isValidation() {
+        let title = document.getElementById('inputTitle').value;
+        if(title == null || title == '') {
+            let inputTitle = document.getElementById('inputTitle');
+
+            inputTitle.classList.add('is-invalid');
+            inputTitle.parentNode.appendChild(
+               inValidNode()
+            )
+            return false;
+        }
+    }
+
+    function inValidNode() {
+        let div = document.createElement('div');
+        div.classList.add('invalid-feedback');
+        div.textContent = '필수입력입니다.';
+
+        return div;
+    }
+</script>

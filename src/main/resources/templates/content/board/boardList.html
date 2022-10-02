@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <!-- Custom styles for this page -->
+    <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <style>
+        /*제목만 cursor 주기*/
+        table td:nth-child(2) {cursor: pointer;}
+    </style>
+</head>
+<body>
+   <!-- Begin Page Content -->
+    <th:block layout:fragment="content">
+    <!-- Page level plugins -->
+    <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="/js/demo/datatables-demo.js"></script>
+
+    <div class="container-fluid" >
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+    <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
+        For more information about DataTables, please visit the <a target="_blank"
+                                                                   href="https://datatables.net">official DataTables documentation</a>.</p>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>NO</th>
+                        <th>title</th>
+                        <th>content</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>footer_no</th>
+                        <th>footer_title</th>
+                        <th>footer_content</th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    <tr th:each="rslt, idx : ${boardList}">
+                        <td th:data-board-id="${rslt.getBoardId()}" th:text="${idx.index + 1}"></td>
+                        <td class='table-title' th:text="${rslt.title}"></td>
+                        <td th:text="${rslt.content}"></td>
+                    </tr>
+                    <tr>
+                        <td>Tiger Nixon</td>
+                        <td>System Architect</td>
+                        <td>Edinburgh</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!--버튼 그룹 -->
+            <div class="row">
+                <div class="col-sm" style="text-align: right">
+                    <button type="button" class="btn btn-primary btn-regist">등록</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+    <!-- /.container-fluid -->
+
+    </th:block>
+</body>
+</html>
+<script>
+    // 한페이지에 하나씩 실행되는 onload
+    window.onload = function() {
+
+    }
+
+    document.querySelector('.btn-regist').addEventListener('click', () => {
+        /* const : 한번 할당하면 재 할당 안됨 */
+        const urlPath = document.location.pathname.replace('/', '').split('/');
+        const path = urlPath[0];
+        location.href = '../' + path + '/regist';
+    });
+
+    const titles = document.querySelectorAll('.table-title');
+    titles.forEach(title =>{
+       title.addEventListener('click', (e) =>{
+           let form = document.createElement('form');
+           let input = document.createElement('input');
+           input.type = 'hidden';
+           input.value = e.target.parentElement.firstElementChild.getAttribute('data-board-id');
+           input.name = 'boardId';
+           form.appendChild(input);
+           form.setAttribute('action', 'view');
+           form.setAttribute('method', 'GET');
+           form.setAttribute('contentType', 'multipart/form-data');
+
+           document.body.appendChild(form);
+           form.submit();
+       })
+    });
+
+</script>
