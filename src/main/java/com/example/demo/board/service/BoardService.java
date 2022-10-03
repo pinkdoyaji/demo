@@ -7,9 +7,9 @@ import java.util.Optional;
 
 
 public interface BoardService {
-   public List<Board> list(Board board);
-   public Optional<Board> view(Board board);
-   public long insert(Board board);
-   public int update(Board board);
-   public int delete(Board board);
+   public List<Board> list(Board board) throws Exception;
+   public Optional<Board> view(Board board) throws Exception;
+   public long insert(Board board)  throws Exception;
+   public int update(Board board)  throws Exception;
+   public int delete(Board board)  throws Exception;
 }

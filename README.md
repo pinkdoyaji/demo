@@ -1,2 +1,3 @@
 ##VIEW
-https://startbootstrap.com/theme/sb-admin-2
+https://github.com/stisla/stisla > MIT License
+
